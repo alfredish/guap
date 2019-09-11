@@ -135,8 +135,22 @@ data add(){
 
 
 //поиск: найти информацию о людях, родившихся в месяц, значение которого введено с клавиатуры.
-void findPeople(){
+void findPeople(vector<data> &timeData,int month){
+    vector<data> infoFindPeople;
     
+    for (int i=0; i<timeData.size();i++){
+        if (timeData[i].month == month){
+            infoFindPeople.push_back(timeData[i]);
+        }
+    }
+    
+    if (infoFindPeople.size() == 0){
+        cout << "В базе данных нету людей родившихся в этом месяце" << endl;
+    }else {
+        for(int i=0;i<infoFindPeople.size();i++){
+            cout << endl << "Имя, фамилия : " << infoFindPeople[i].name << " " << infoFindPeople[i].soname << ". Дата рождения: " << infoFindPeople[i].day << "." << infoFindPeople[i].month << "." << infoFindPeople[i].year << ". Знак задиака: " << infoFindPeople[i].badassSign << "." << endl << endl;
+        }
+    }
 }
 
 
@@ -156,6 +170,12 @@ int main() {
         switch (digite) {
             case 1:
                 mainData.push_back(add());
+                break;
+            case 2:
+                int month;
+                cout << "Введите месяц, в котором родились люди: ";
+                cin >> month;
+                findPeople(mainData,month);
                 break;
             default:
                 check = false;
