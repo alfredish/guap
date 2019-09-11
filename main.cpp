@@ -7,19 +7,19 @@
 //
 
 //что надо
-//вводить информацию, хранить её в файле, осуществлять поиск, модификацию, сортировку и удаление данных
+//вводить информацию, хранить её в файле, осуществлять поиск, модификацию, сортировку и удаление данных
 
 /*
  Предметная область – «Информация о сотрудниках».
- Данные о человеке хранятся в структуре с именем ZNAK, содержащей следующие поля:
+ Данные о человеке хранятся в структуре с именем ZNAK, содержащей следующие поля:
   фамилия, имя;
   знак зодиака;
-  дата рождения (массив из трёх чисел).
- Задание на поиск: найти информацию о людях, родившихся в месяц, значение которого введено с клавиатуры.
+  дата рождения (массив из трёх чисел).
+ Задание на поиск: найти информацию о людях, родившихся в месяц, значение которого введено с клавиатуры.
 */
 
 
-//сделать проверку даты и введенных данных вообще 
+
 
 #include <iostream>
 #include <iomanip>
@@ -49,16 +49,22 @@ string coutCin(string text){
 
 //проверка корректности ввода даты рождения
 bool checkDate(string date,data &timeData){
+    
+    if (date.length() != 10) {
+        return 0;
+    }
+    
     int day = atoi(date.substr(0,2).c_str());
     int month = atoi(date.substr(3,2).c_str());
     int year = atoi(date.substr(6,4).c_str());
     
-    if ((day > 0 && day < 32) && (month > 0 && month < 13) && (year > 0 && year < 2019) && (date.substr(2,1) == "." && date.substr(5,1) == ".") && date.length() == 10){
+    if ((day > 0 && day < 32) && (month > 0 && month < 13) && (year > 0 && year < 2019) && (date.substr(2,1) == "." && date.substr(5,1) == ".")){
         timeData.day = day;
         timeData.month = month;
         timeData.year = year;
         return 1;
     }
+    
     return 0;
 }
 
@@ -104,6 +110,7 @@ void menu(){
     cout << "| 5 - сортировка пользователей по знаку задиака |" << endl;
     cout << "| 6 - сортировка пользователей по дате рождения |" << endl;
     cout << "| 7 - удалить пользователя                      |" << endl;
+    cout << "| любая другая цифра, буква выход из программы  |" << endl;
     cout << "\\-----------------------------------------------/" << endl << endl;
     
 }
@@ -117,15 +124,20 @@ data add(){
     string date = coutCin("Дата рождения в фортате ДД.ММ.ГГГГ: ");
     
     if (!checkDate(date,timeData)){
-        cout << "плохая дата" << endl;
+        cout << "Вы ввели некоректную дату рождения" << endl;
+    }else{
+        timeData.badassSign = badass(timeData.day,timeData.month);
     }
     
-    timeData.badassSign = badass(timeData.day,timeData.month);
-    
+    cout << endl << endl << "Данные успешно добавлены " << endl << endl;
     return timeData;
 }
 
 
+//поиск: найти информацию о людях, родившихся в месяц, значение которого введено с клавиатуры.
+void findPeople(){
+    
+}
 
 
 int main() {
@@ -138,6 +150,7 @@ int main() {
     while (check) {
         menu();
         
+        cout << "Введите число соответстующее нужной надписи ( русский моя сильная сторона ):  ";
         cin >> digite;
         
         switch (digite) {
@@ -145,10 +158,9 @@ int main() {
                 mainData.push_back(add());
                 break;
             default:
-                break;
+                check = false;
         }
         
-        check = false;
     }
     
     return 0;
