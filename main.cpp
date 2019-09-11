@@ -155,15 +155,15 @@ void findPeople(vector<data> &timeData,int month){
 
 
 int main() {
+    
     vector<data> mainData;
-    int digite;
-    fstream file;
     
     bool check = true;
     
     while (check) {
         menu();
         
+        int digite;
         cout << "Введите число соответстующее нужной надписи ( русский моя сильная сторона ):  ";
         cin >> digite;
         
@@ -180,8 +180,6 @@ int main() {
             default:
                 check = false;
         }
-        
     }
-    
     return 0;
 }
