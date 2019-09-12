@@ -21,7 +21,7 @@
 
 
 
-//реализовать changeDate  и dataChange разбить по функциям !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//dataChange разбить по функциям !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <iostream>
 #include <iomanip>
@@ -42,7 +42,6 @@ struct ZNAK {
 };
 
 //ввод данных
-
 string coutCin(string text){
     string var;
     cout << text;
@@ -50,13 +49,13 @@ string coutCin(string text){
     return var;
 }
 
+//ввод данных в int
 int coutCinInt(string text){
     int var;
     cout << text;
     cin >> var;
     return var;
 }
-
 
 //проверка корректности ввода даты рождения
 bool checkDate(string date,ZNAK &timeData){
@@ -166,6 +165,9 @@ void findPeople(vector<ZNAK> &timeData){
     }
 }
 
+
+
+
 // изменение имени
 void changeName(vector<ZNAK> &data,int &index){
     string newName = coutCin("Введите новое имя: ");
@@ -178,8 +180,18 @@ void changeSoname(vector<ZNAK> &data,int &index){
     data[index].soname = newSoname;
 }
 //изменение даты рожедения и гороскопа автоматически
-void changeDate(){
+void changeDate(vector<ZNAK> &data,int &index){
+    ZNAK timeData;
+    string date = coutCin("Дата рождения в фортате ДД.ММ.ГГГГ: ");
     
+    if (!checkDate(date,timeData)){
+        cout << "Вы ввели некоректную дату рождения" << endl;
+    }else{
+        data[index].badassSign = badass(timeData.day,timeData.month);
+        data[index].day = timeData.day;
+        data[index].month = timeData.month;
+        data[index].year = timeData.year;
+    }
 }
 
 //изменения данных
@@ -205,10 +217,10 @@ void dataChange(vector<ZNAK> &data){
         
         if (personIndex > 0 && personIndex < timeData.size()+1){
             personIndex--;
-            cout << "Что вы хотите изменить ? Введите последовательность цифр.";
-            cout << "1 - Имя";
-            cout << "2 - Фамилия";
-            cout << "3 - дата рождения";
+            cout << "Что вы хотите изменить ? Введите последовательность цифр." << endl;
+            cout << "1 - Имя" << endl;
+            cout << "2 - Фамилия" << endl;
+            cout << "3 - дата рождения" << endl;
             
             int digite = coutCinInt("");
             
@@ -220,7 +232,7 @@ void dataChange(vector<ZNAK> &data){
                     changeSoname(data,personIndex);
                     break;
                 case 3:
-                    changeDate();
+                    changeDate(data,personIndex);
                     break;
                 default:
                     break;
