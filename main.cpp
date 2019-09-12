@@ -20,8 +20,7 @@
 
 
 
-
-//dataChange разбить по функциям !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//removePeople и dataChange большой общий кусок кода, который надо вынести в функцию !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <iostream>
 #include <iomanip>
@@ -160,7 +159,7 @@ void findPeople(vector<ZNAK> &timeData){
         cout << "В базе данных нету людей родившихся в этом месяце" << endl;
     }else {
         for(int i=0;i<infoFindPeople.size();i++){
-            cout << endl << "Имя, фамилия : " << infoFindPeople[i].name << " " << infoFindPeople[i].soname << ". Дата рождения: " << infoFindPeople[i].day << "." << infoFindPeople[i].month << "." << infoFindPeople[i].year << ". Знак задиака: " << infoFindPeople[i].badassSign << "." << endl << endl;
+            cout << "Имя, фамилия : " << infoFindPeople[i].name << " " << infoFindPeople[i].soname << ". Дата рождения: " << infoFindPeople[i].day << "." << infoFindPeople[i].month << "." << infoFindPeople[i].year << ". Знак задиака: " << infoFindPeople[i].badassSign << "." << endl;
         }
     }
 }
@@ -194,18 +193,27 @@ void changeDate(vector<ZNAK> &data,int &index){
     }
 }
 
-//изменения данных
-void dataChange(vector<ZNAK> &data){
+//поиск людей по имени и фамилии    возвращает массив индексов
+vector<int> findPeopleForNameAndSoname(vector<ZNAK> &data){
+    string soname = coutCin("Введите фамилию пользователя: ");
     string name = coutCin("Введите текущее имя: ");
-    string soname = coutCin("Введите текущую фамилию: ");
     
-    vector<int> timeData;
-    //ищем совпадения
+    vector<int> index;
+    
     for (auto i=0;i<data.size();i++){
         if (data[i].name == name && data[i].soname == soname){
-            timeData.push_back(i);
+            index.push_back(i);
         }
     }
+    return index;
+}
+
+//изменения данных
+void dataChange(vector<ZNAK> &data){
+    
+    //ищем совпадения
+    vector<int> timeData = findPeopleForNameAndSoname(data);
+   
     //что хотил поменять
     if (timeData.size() > 0){
         cout << endl;
@@ -246,6 +254,35 @@ void dataChange(vector<ZNAK> &data){
     
 }
 
+
+//удаление пользователя
+void removePeople(vector<ZNAK> &data){
+   
+    vector<int> index = findPeopleForNameAndSoname(data);
+    
+    //что хотил поменять
+    if (index.size() > 0){
+        cout << endl;
+        for (auto i=0;i<index.size();i++){
+            cout << i+1 << " : " << data[i].name << " " << data[i].soname <<  " " << data[i].day << "." << data[i].month << "." << data[i].year << " " << data[i].badassSign << endl;
+        }
+        
+        int personIndex = coutCinInt("Выберите нужного пользователя: ");
+        
+        if (personIndex > 0 && personIndex < index.size()+1){
+            personIndex--;
+            
+            data.erase(data.begin() + personIndex);
+            
+        }else{
+            cout << endl <<  "Таких пользователей не найдено " << endl;
+        }
+    }else {
+        cout << endl <<  "Таких пользователей не найдено " << endl;
+    }
+}
+
+
 int main() {
     
     vector<ZNAK> mainData;
@@ -266,6 +303,15 @@ int main() {
                 break;
             case 3:
                 dataChange(mainData);
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                removePeople(mainData);
                 break;
             default:
                 check = false;
