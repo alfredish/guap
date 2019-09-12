@@ -21,6 +21,8 @@
 
 
 
+//реализовать changeDate  и dataChange разбить по функциям !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -30,7 +32,7 @@
 using namespace std;
 
 
-struct data {
+struct ZNAK {
     string name;
     string soname;
     int month;
@@ -40,6 +42,7 @@ struct data {
 };
 
 //ввод данных
+
 string coutCin(string text){
     string var;
     cout << text;
@@ -47,8 +50,16 @@ string coutCin(string text){
     return var;
 }
 
+int coutCinInt(string text){
+    int var;
+    cout << text;
+    cin >> var;
+    return var;
+}
+
+
 //проверка корректности ввода даты рождения
-bool checkDate(string date,data &timeData){
+bool checkDate(string date,ZNAK &timeData){
     
     if (date.length() != 10) {
         return 0;
@@ -117,8 +128,8 @@ void menu(){
 
 
 //добавление данных
-data add(){
-    data timeData;
+ZNAK add(){
+    ZNAK timeData;
     timeData.soname = coutCin("Введите фамилию: ");
     timeData.name = coutCin("Введите имя: ");
     string date = coutCin("Дата рождения в фортате ДД.ММ.ГГГГ: ");
@@ -135,8 +146,10 @@ data add(){
 
 
 //поиск: найти информацию о людях, родившихся в месяц, значение которого введено с клавиатуры.
-void findPeople(vector<data> &timeData,int month){
-    vector<data> infoFindPeople;
+void findPeople(vector<ZNAK> &timeData){
+    vector<ZNAK> infoFindPeople;
+    
+     int month = coutCinInt("Введите месяц, в котором родились люди: ");
     
     for (int i=0; i<timeData.size();i++){
         if (timeData[i].month == month){
@@ -153,29 +166,94 @@ void findPeople(vector<data> &timeData,int month){
     }
 }
 
+// изменение имени
+void changeName(vector<ZNAK> &data,int &index){
+    string newName = coutCin("Введите новое имя: ");
+    data[index].name = newName;
+}
+
+//изменение фамилии
+void changeSoname(vector<ZNAK> &data,int &index){
+    string newSoname = coutCin("Введите новую фамилию: ");
+    data[index].soname = newSoname;
+}
+//изменение даты рожедения и гороскопа автоматически
+void changeDate(){
+    
+}
+
+//изменения данных
+void dataChange(vector<ZNAK> &data){
+    string name = coutCin("Введите текущее имя: ");
+    string soname = coutCin("Введите текущую фамилию: ");
+    
+    vector<int> timeData;
+    //ищем совпадения
+    for (auto i=0;i<data.size();i++){
+        if (data[i].name == name && data[i].soname == soname){
+            timeData.push_back(i);
+        }
+    }
+    //что хотил поменять
+    if (timeData.size() > 0){
+        cout << endl;
+        for (auto i=0;i<timeData.size();i++){
+            cout << i+1 << " : " << data[i].name << " " << data[i].soname <<  " " << data[i].day << "." << data[i].month << "." << data[i].year << " " << data[i].badassSign << endl << endl << endl;
+        }
+        
+        int personIndex = coutCinInt("Выберите нужного пользователя: ");
+        
+        if (personIndex > 0 && personIndex < timeData.size()+1){
+            personIndex--;
+            cout << "Что вы хотите изменить ? Введите последовательность цифр.";
+            cout << "1 - Имя";
+            cout << "2 - Фамилия";
+            cout << "3 - дата рождения";
+            
+            int digite = coutCinInt("");
+            
+            switch (digite) {
+                case 1:
+                    changeName(data,personIndex);
+                    break;
+                case 2:
+                    changeSoname(data,personIndex);
+                    break;
+                case 3:
+                    changeDate();
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            cout << endl <<  "Таких пользователей не найдено " << endl;
+        }
+    }else {
+        cout << endl <<  "Таких пользователей не найдено " << endl;
+    }
+    
+}
 
 int main() {
     
-    vector<data> mainData;
+    vector<ZNAK> mainData;
     
     bool check = true;
     
     while (check) {
         menu();
         
-        int digite;
-        cout << "Введите число соответстующее нужной надписи ( русский моя сильная сторона ):  ";
-        cin >> digite;
-        
+        int digite = coutCinInt("Введите число соответстующее нужной надписи ( русский моя сильная сторона ):  ");
+     
         switch (digite) {
             case 1:
                 mainData.push_back(add());
                 break;
             case 2:
-                int month;
-                cout << "Введите месяц, в котором родились люди: ";
-                cin >> month;
-                findPeople(mainData,month);
+                findPeople(mainData);
+                break;
+            case 3:
+                dataChange(mainData);
                 break;
             default:
                 check = false;
