@@ -322,7 +322,6 @@ void workWithFileLine(vector<ZNAK> &data,string line){
     int count = 0;
     for (int i=0;i<line.length();i++){
         if (line[i] != ' '){
-           // cout << timeString << endl;
             timeString += line[i];
         }
         else{
@@ -362,8 +361,9 @@ void workWithFileLine(vector<ZNAK> &data,string line){
 void readData(vector<ZNAK> &data){
     
     ifstream file("/Users/kirillkornusenkov/Desktop/guapMaimProject/guapMaimProject/file.txt");
+    
     if (!file){
-        cout << "filt is not open" << endl;
+        //файл не открыл ну и ок
     }else{
         string line;
         while (getline(file,line)) {
@@ -419,4 +419,3 @@ int main() {
     }
     return 0;
 }
-
