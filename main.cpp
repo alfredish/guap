@@ -22,8 +22,8 @@
 
 //removePeople и dataChange большой общий кусок кода, который надо вынести в функцию !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//readData workWithFileLine надо протестировать мб они не работают (написал, не проверял)
-
+//readData workWithFileLine  saveData надо протестировать мб они не работают (написал, не проверял)
+//какая-то хуйня со считыванием данных из файла !!!!!!!!
 
 #include <iostream>
 #include <string>
@@ -303,56 +303,63 @@ void sortDate(vector<ZNAK> &data){
 
 //сохранение данных
 void saveData(vector<ZNAK> &data){
+    ofstream file("/Users/kirillkornusenkov/Desktop/guapMaimProject/guapMaimProject/file.txt");
     
+    if (file.is_open()){
+        for (int i=0;i<data.size();i++){
+            file << data[i].name << " " << data[i].soname << " " << data[i].day << " "  << data[i].month << " " << data[i].year << endl;
+        }
+    }
+    else {
+        cout << "Файл не создан";
+    }
 }
 
 
 //обработка строки и добавление в вектор структуру
 void workWithFileLine(vector<ZNAK> &data,string line){
-    if (line != ""){
-        ZNAK timeStruct;
-        string timeString;
-        int count = 0;
-        for (int i=0;i<line.length();i++){
-            if (line[i] != 32){
-                timeString += line[i];
-                
-            }
-            else{
-                switch (count) {
-                    case 1:
-                        count++;
-                        timeStruct.name = timeString;
-                        timeString = "";
-                        break;
-                    case 2:
-                        count++;
-                        timeStruct.soname = timeString;
-                        timeString = "";
-                        break;
-                    case 3:
-                        count++;
-                        timeStruct.day = atoi(timeString.c_str());;
-                        timeString = "";
-                        break;
-                    case 4:
-                        count++;
-                        timeStruct.month = atoi(timeString.c_str());
-                        timeString = "";
-                        break;
-                    case 5:
-                        count++;
-                        timeStruct.year = atoi(timeString.c_str());
-                        timeString = "";
-                        break;
-                    case 6:
-                        count++;
-                        timeStruct.badassSign = timeString;
-                        timeString = "";
-                        break;
-                    default:
-                        break;
-                }
+    
+    ZNAK timeStruct;
+    string timeString;
+    int count = 0;
+    for (int i=0;i<line.length();i++){
+        if (line[i] != ' '){
+            timeString += line[i];
+        }
+        else{
+            switch (count) {
+                case 0:
+                    count++;
+                    timeStruct.name = timeString;
+                    timeString = "";
+                    break;
+                case 1:
+                    count++;
+                    timeStruct.soname = timeString;
+                    timeString = "";
+                    break;
+                case 2:
+                    count++;
+                    timeStruct.day = atoi(timeString.c_str());;
+                    timeString = "";
+                    break;
+                case 3:
+                    count++;
+                    timeStruct.month = atoi(timeString.c_str());
+                    timeString = "";
+                    break;
+                case 4:
+                    count++;
+                    timeStruct.year = atoi(timeString.c_str());
+                    timeString = "";
+                    break;
+                case 5:
+                    count++;
+                    timeStruct.badassSign = timeString;
+                    timeString = "";
+                    break;
+                default:
+                    break;
             }
         }
         data.push_back(timeStruct);
@@ -361,12 +368,13 @@ void workWithFileLine(vector<ZNAK> &data,string line){
 //считывание данных
 void readData(vector<ZNAK> &data){
     
-    ifstream file("file.txt");
+    ifstream file("/Users/kirillkornusenkov/Desktop/guapMaimProject/guapMaimProject/file.txt");
     if (!file){
         cout << "filt is not open" << endl;
     }else{
         string line;
         while (getline(file,line)) {
+            cout << line;
             workWithFileLine(data,line);
         }
         
@@ -381,6 +389,7 @@ int main() {
     setlocale(LC_ALL, "ru");
     
     vector<ZNAK> mainData;
+    readData(mainData);
     
     bool check = true;
     
@@ -412,6 +421,7 @@ int main() {
                 removePeople(mainData);
                 break;
             default:
+                saveData(mainData);
                 check = false;
         }
     }
