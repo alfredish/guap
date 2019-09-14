@@ -22,8 +22,6 @@
 
 //removePeople и dataChange большой общий кусок кода, который надо вынести в функцию !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//readData workWithFileLine  saveData надо протестировать мб они не работают (написал, не проверял)
-//какая-то хуйня со считыванием данных из файла !!!!!!!!
 
 #include <iostream>
 #include <string>
@@ -324,6 +322,7 @@ void workWithFileLine(vector<ZNAK> &data,string line){
     int count = 0;
     for (int i=0;i<line.length();i++){
         if (line[i] != ' '){
+           // cout << timeString << endl;
             timeString += line[i];
         }
         else{
@@ -348,22 +347,16 @@ void workWithFileLine(vector<ZNAK> &data,string line){
                     timeStruct.month = atoi(timeString.c_str());
                     timeString = "";
                     break;
-                case 4:
-                    count++;
-                    timeStruct.year = atoi(timeString.c_str());
-                    timeString = "";
-                    break;
-                case 5:
-                    count++;
-                    timeStruct.badassSign = timeString;
-                    timeString = "";
-                    break;
                 default:
                     break;
             }
         }
-        data.push_back(timeStruct);
     }
+    if (count == 4) {
+        timeStruct.year = atoi(timeString.c_str());
+        timeStruct.badassSign = badass(timeStruct.day, timeStruct.month);
+    }
+    data.push_back(timeStruct);
 }
 //считывание данных
 void readData(vector<ZNAK> &data){
@@ -374,7 +367,6 @@ void readData(vector<ZNAK> &data){
     }else{
         string line;
         while (getline(file,line)) {
-            cout << line;
             workWithFileLine(data,line);
         }
         
@@ -427,3 +419,4 @@ int main() {
     }
     return 0;
 }
+
