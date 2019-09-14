@@ -22,11 +22,15 @@
 
 //removePeople и dataChange большой общий кусок кода, который надо вынести в функцию !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+//readData workWithFileLine надо протестировать мб они не работают (написал, не проверял)
+
+
 #include <iostream>
-#include <iomanip>
-#include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <fstream>
+
 
 using namespace std;
 
@@ -208,6 +212,8 @@ vector<int> findPeopleForNameAndSoname(vector<ZNAK> &data){
     return index;
 }
 
+
+
 //изменения данных
 void dataChange(vector<ZNAK> &data){
     
@@ -282,8 +288,97 @@ void removePeople(vector<ZNAK> &data){
     }
 }
 
+//сортировка массива по фамилии
+void sortPeople(vector<ZNAK> &data){
+    
+}
+//сортировка по гороскопу
+void sortBadassSign(vector<ZNAK> &data){
+    
+}
+//сортировка по дате рождения
+void sortDate(vector<ZNAK> &data){
+    
+}
+
+//сохранение данных
+void saveData(vector<ZNAK> &data){
+    
+}
+
+
+//обработка строки и добавление в вектор структуру
+void workWithFileLine(vector<ZNAK> &data,string line){
+    if (line != ""){
+        ZNAK timeStruct;
+        string timeString;
+        int count = 0;
+        for (int i=0;i<line.length();i++){
+            if (line[i] != 32){
+                timeString += line[i];
+                
+            }
+            else{
+                switch (count) {
+                    case 1:
+                        count++;
+                        timeStruct.name = timeString;
+                        timeString = "";
+                        break;
+                    case 2:
+                        count++;
+                        timeStruct.soname = timeString;
+                        timeString = "";
+                        break;
+                    case 3:
+                        count++;
+                        timeStruct.day = atoi(timeString.c_str());;
+                        timeString = "";
+                        break;
+                    case 4:
+                        count++;
+                        timeStruct.month = atoi(timeString.c_str());
+                        timeString = "";
+                        break;
+                    case 5:
+                        count++;
+                        timeStruct.year = atoi(timeString.c_str());
+                        timeString = "";
+                        break;
+                    case 6:
+                        count++;
+                        timeStruct.badassSign = timeString;
+                        timeString = "";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        data.push_back(timeStruct);
+    }
+}
+//считывание данных
+void readData(vector<ZNAK> &data){
+    
+    ifstream file("file.txt");
+    if (!file){
+        cout << "filt is not open" << endl;
+    }else{
+        string line;
+        while (getline(file,line)) {
+            workWithFileLine(data,line);
+        }
+        
+        file.close();
+    }
+    
+    
+}
 
 int main() {
+    
+    setlocale(LC_ALL, "ru");
     
     vector<ZNAK> mainData;
     
@@ -305,10 +400,13 @@ int main() {
                 dataChange(mainData);
                 break;
             case 4:
+                sortPeople(mainData);
                 break;
             case 5:
+                sortBadassSign(mainData);
                 break;
             case 6:
+                sortDate(mainData);
                 break;
             case 7:
                 removePeople(mainData);
