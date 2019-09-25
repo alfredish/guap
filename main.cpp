@@ -11,6 +11,7 @@
 
 using namespace std;
 
+//проверка строки крч
 bool check(string& line){
     int count = 0;
     char time = ' ';
@@ -33,11 +34,8 @@ bool check(string& line){
 
 int main() {
     string line;
-    
     cin >> line;
-    
-   
-    
+
     bool answer_chekc_func = check(line,time,count);
     
     if (answer_chekc_func == 1){
