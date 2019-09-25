@@ -11,7 +11,9 @@
 
 using namespace std;
 
-bool check(string& line,char& time, int& count){
+bool check(string& line){
+    int count = 0;
+    char time = ' ';
     for (int i=0;i<line.length();i++){
         if ((line[i] == '0' || line[i] == '1') && (line[i] == time)){
             count++;
@@ -34,8 +36,7 @@ int main() {
     
     cin >> line;
     
-    int count = 0;
-    char time = ' ';
+   
     
     bool answer_chekc_func = check(line,time,count);
     
