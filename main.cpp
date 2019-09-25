@@ -13,8 +13,10 @@ using namespace std;
 
 //проверка строки крч
 bool check(string& line){
+    
     int count = 0;
     char time = ' ';
+    
     for (int i=0;i<line.length();i++){
         if ((line[i] == '0' || line[i] == '1') && (line[i] == time)){
             count++;
@@ -24,7 +26,6 @@ bool check(string& line){
         time = line[i];
     }
     
-    
     if (count >= 3){
         return 1;
     }
@@ -33,6 +34,7 @@ bool check(string& line){
 }
 
 int main() {
+    
     string line;
     cin >> line;
 
